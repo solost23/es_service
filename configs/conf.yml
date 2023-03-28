@@ -1,0 +1,18 @@
+name: "es_service"
+mode: "debug"
+time_location: "Asia/Shanghai"
+config_path: "srv/es"
+
+consul:
+  host: "localhost"
+  port: 8500
+
+es:
+  host: "127.0.0.1"
+  port: 9200
+
+mysql:
+  dsn: "root:123@tcp(localhost:3306)/es_service?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"
+  max_open_conn: 20
+  max_idle_conn: 10
+  max_conn_life_time: 100
