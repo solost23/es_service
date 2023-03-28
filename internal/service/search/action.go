@@ -20,7 +20,6 @@ func NewActionWithCtx(ctx context.Context) *Action {
 }
 
 func (a *Action) Deal(ctx context.Context, request *es_service.SearchRequest) (reply *es_service.SearchResponse, err error) {
-
 	page := int(request.GetPage())
 	size := int(request.GetSize())
 	if page <= 0 {
@@ -102,6 +101,11 @@ func (a *Action) BuildInquires(seeks *es_service.Query) []elastic.Query {
 	if len(seeks.GetMatchQueries()) > 0 {
 		for _, seek := range seeks.GetMatchQueries() {
 			inquires = append(inquires, elastic.NewMatchQuery(seek.GetField(), seek.GetValue()))
+		}
+	}
+	if len(seeks.GetMultiMatchQueries()) > 0 {
+		for _, seek := range seeks.GetMultiMatchQueries() {
+			inquires = append(inquires, elastic.NewMultiMatchQuery(seek.GetValue(), seek.GetField()...))
 		}
 	}
 	if len(seeks.GetRangeQueries()) > 0 {

@@ -9,7 +9,7 @@ require (
 	github.com/hashicorp/consul/api v1.18.0
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/satori/go.uuid v1.2.0
-	github.com/solost23/protopb v1.0.9
+	github.com/solost23/protopb v1.1.0
 	github.com/spf13/viper v1.15.0
 	go.uber.org/zap v1.21.0
 	google.golang.org/grpc v1.52.0

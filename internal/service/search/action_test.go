@@ -48,13 +48,16 @@ func TestAction_Deal(T *testing.T) {
 						TraceId:     101,
 					},
 					MustQuery: &es_service.Query{
-						TermQueries: []*es_service.TermQuery{
-							{Field: "Username", Value: "alex1"},
-						},
+						//TermQueries: []*es_service.TermQuery{
+						//	{Field: "Username", Value: "alex1"},
+						//},
 						//RangeQueries: []*es_service.RangeQuery{
 						//	{Field: "retweets", Gte: "0"},
 						//	{Field: "retweets", Lte: "3"},
 						//},
+						MultiMatchQueries: []*es_service.MultiMatchQuery{
+							{Field: []string{"Username", "Introduce"}, Value: "alex2"},
+						},
 					},
 					//MustNotQuery: &es.Query{
 					//	TermQuery: []*es.TermQuery{
