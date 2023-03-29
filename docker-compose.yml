@@ -1,0 +1,64 @@
+version: "3.5"
+
+services:
+  es_service:
+    build: "."
+    restart: always
+    volumes:
+      - "/Users/ty/server/os_service/configs:/configs"
+      - "/Users/ty/server/os_service/certs:/etc/ssl/certs/"
+    depends_on:
+      - mariadb
+      - consul
+      - elasticsearch
+    networks:
+      - app_net
+
+  mariadb:
+    image: mariadb:10.5.5
+    container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "123"
+      MYSQL_ROOT_PASSWORD: "123"
+      TZ: "Asia/Shanghai"
+    ports:
+      - "3306:3306"
+    volumes:
+      - "/Users/ty/mariadb/data:/var/lib/mysql"
+      - "/Users/ty/mariadb/log:/var/log/mysql"
+      - "/Users/ty/mariadb/conf:/etc/mysql"
+    networks:
+      - app_net
+
+  consul:
+    image: consul:latest
+    container_name: consul
+    ports:
+      - "8500:8500"
+    networks:
+      - app_net
+
+  elasticsearch:
+    image: elasticsearch:7.13.3
+    container_name: elasticsearch
+    privileged: true
+    environment:
+      - "cluster.name=elasticsearch"
+      - "discovery.type=single-node"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx1096m"
+      - "bootstrap.memory_lock=true"
+    volumes:
+      - "/Users/ty/es/plugins:/usr/share/elasticsearch/plugins"
+      - "/Users/ty/es/data:/usr/share/elasticsearch/data:rw"
+      - "/Users/ty/es/logs:/user/share/elasticsearch/logs:rw"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - app_net
+
+networks:
+  app_net:
+    external: true
