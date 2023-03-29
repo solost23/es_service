@@ -44,5 +44,8 @@ func (a *Action) Deal(ctx context.Context, request *es_service.CreateRequest) (r
 		Result:     createResult.Result,
 		Status:     createResult.Status,
 	}).Insert(a.GetMysqlConnect())
+	if err != nil {
+		a.GetSl().Errorf("Document Record Create Failed: %s \n", createResult.Id)
+	}
 	return reply, nil
 }

@@ -43,5 +43,8 @@ func (a *Action) Deal(ctx context.Context, request *es_service.DeleteRequest) (r
 		Result:     deleteResult.Result,
 		Status:     deleteResult.Status,
 	}).Insert(a.GetMysqlConnect())
+	if err != nil {
+		a.GetSl().Errorf("Document Delete Record Create Failed: %s \n", deleteResult.Id)
+	}
 	return
 }
