@@ -11,7 +11,9 @@ import (
 	"time"
 )
 
-func InitMysql(mysqlConf *configs.MySQLConf) (db *gorm.DB, err error) {
+func InitMysql(config *configs.ServerConfig) (db *gorm.DB, err error) {
+	mySQLConf := config.MySQLConfig
+
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
@@ -23,7 +25,7 @@ func InitMysql(mysqlConf *configs.MySQLConf) (db *gorm.DB, err error) {
 	)
 
 	db, err = gorm.Open(mysql.New(mysql.Config{
-		DSN:               mysqlConf.DataSourceName,
+		DSN:               mySQLConf.DataSourceName,
 		DefaultStringSize: 100,
 	}), &gorm.Config{
 		Logger: newLogger,
@@ -36,9 +38,9 @@ func InitMysql(mysqlConf *configs.MySQLConf) (db *gorm.DB, err error) {
 	if err != nil {
 		zap.S().Panic(err)
 	}
-	sqlDB.SetMaxOpenConns(mysqlConf.MaxOpenConn)
-	sqlDB.SetMaxIdleConns(mysqlConf.MaxIdleConn)
-	sqlDB.SetConnMaxLifetime(time.Duration(mysqlConf.MaxConnLifeTime) * time.Second)
+	sqlDB.SetMaxOpenConns(mySQLConf.MaxOpenConn)
+	sqlDB.SetMaxIdleConns(mySQLConf.MaxIdleConn)
+	sqlDB.SetConnMaxLifetime(time.Duration(mySQLConf.MaxConnLifeTime) * time.Second)
 
 	if err != nil {
 		return nil, err

@@ -38,9 +38,9 @@ func NewServer(serverConfig *configs.ServerConfig, sl *slog.SugaredLogger) *Serv
 func (s *Server) Run() {
 	server := grpc.NewServer()
 	// 初始化MySQL, ES, Kafka链接
-	mdb, err := models.InitMysql(s.serverConfig.MySQLConfig)
+	mdb, err := models.InitMysql(s.serverConfig)
 	must(err)
-	esdb, err := es.NewESClient(s.serverConfig.ESConfig)
+	esdb, err := es.NewESClient(s.serverConfig)
 	must(err)
 	// TODO: 初始化Kafka
 
