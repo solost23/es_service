@@ -14,8 +14,8 @@ RUN apk add tzdata
 FROM scratch
 
 COPY --from=builder /build/app /
-COPY --from=builder /build/configs /
-COPY --from=builder /build/certs /etc/ssl/certs/
+#COPY --from=builder /build/configs /
+#COPY --from=builder /build/certs /etc/ssl/certs/
 
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 ENV TZ=Asia/Shanghai
